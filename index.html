@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luxury Brand Resilience Report 2024 — Kavita Adha</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg:       #09090f;
+      --surface:  #111118;
+      --border:   rgba(255,255,255,0.07);
+      --gold:     #c9a84c;
+      --gold-dim: rgba(201,168,76,0.15);
+      --rose:     #e05c7e;
+      --teal:     #3ecfcf;
+      --purple:   #9b72f5;
+      --green:    #40c98e;
+      --red:      #e05c5c;
+      --muted:    #4a4a5e;
+      --sub:      #8888a0;
+      --text:     #e0e0f0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 32px 36px;
+      min-width: 1100px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .header-eyebrow {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+    .header h1 span { color: var(--gold); }
+    .header-sub {
+      font-size: 12.5px;
+      color: var(--sub);
+      margin-top: 6px;
+      max-width: 560px;
+      line-height: 1.6;
+    }
+    .header-right {
+      text-align: right;
+      padding-top: 4px;
+    }
+    .author-pill {
+      display: inline-block;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
+    .date-line {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 18px 0 22px;
+    }
+
+    /* ── STORY BANNER ── */
+    .story-banner {
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(9,9,15,0) 60%);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .story-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      opacity: 0.5;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .story-text h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .story-text p {
+      font-size: 12px;
+      color: var(--sub);
+      line-height: 1.6;
+      max-width: 900px;
+    }
+
+    /* ── KPI STRIP ── */
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      border-radius: 0 0 12px 12px;
+    }
+    .kpi.gold::after   { background: var(--gold); }
+    .kpi.teal::after   { background: var(--teal); }
+    .kpi.rose::after   { background: var(--rose); }
+    .kpi.purple::after { background: var(--purple); }
+    .kpi.green::after  { background: var(--green); }
+
+    .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; }
+    .kpi-val   { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -1.5px; line-height: 1; }
+    .kpi-sub2  { font-size: 11px; color: var(--sub); margin-top: 5px; line-height: 1.4; }
+    .kpi-tag   { display: inline-block; margin-top: 8px; font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 8px; }
+    .tag-up    { color: var(--green); background: rgba(64,201,142,0.12); }
+    .tag-down  { color: var(--red);   background: rgba(224,92,92,0.12); }
+    .tag-neu   { color: var(--gold);  background: var(--gold-dim); }
+
+    /* ── GRID ── */
+    .grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .grid-5col { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 16px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .card-sub   { font-size: 11px; color: var(--muted); margin-bottom: 16px; line-height: 1.4; }
+
+    /* ── BRAND SCORECARD ── */
+    .scorecard { width: 100%; border-collapse: collapse; }
+    .scorecard th {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.7px; color: var(--muted);
+      padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .scorecard td {
+      font-size: 12.5px; color: var(--text);
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      vertical-align: middle;
+    }
+    .scorecard tr:last-child td { border-bottom: none; }
+    .brand-name { font-weight: 700; font-size: 13px; color: #fff; }
+    .brand-house { font-size: 10.5px; color: var(--muted); margin-top: 1px; }
+
+    .bar-wrap { width: 90px; height: 7px; background: rgba(255,255,255,0.06); border-radius: 4px; display: inline-block; overflow: hidden; }
+    .bar-fill  { height: 100%; border-radius: 4px; }
+
+    .status-pill {
+      font-size: 10.5px; font-weight: 600; padding: 3px 10px; border-radius: 10px; white-space: nowrap;
+    }
+    .s-resilient { color: var(--green);  background: rgba(64,201,142,0.12); }
+    .s-pressure  { color: var(--gold);   background: var(--gold-dim); }
+    .s-decline   { color: var(--red);    background: rgba(224,92,92,0.12); }
+    .s-turnaround{ color: var(--teal);   background: rgba(62,207,207,0.12); }
+
+    /* ── MATRIX ── */
+    .matrix-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .axis-label {
+      position: absolute;
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+    }
+    .axis-x { bottom: 6px; left: 50%; transform: translateX(-50%); }
+    .axis-y { top: 50%; left: 5px; transform: translateY(-50%) rotate(-90deg); }
+    .quadrant-label {
+      position: absolute;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 7px;
+      border-radius: 6px;
+    }
+    .q-tl { top: 12px; left: 12px; color: var(--teal); background: rgba(62,207,207,0.08); }
+    .q-tr { top: 12px; right: 12px; color: var(--green); background: rgba(64,201,142,0.08); }
+    .q-bl { bottom: 28px; left: 12px; color: var(--red); background: rgba(224,92,92,0.08); }
+    .q-br { bottom: 28px; right: 12px; color: var(--gold); background: var(--gold-dim); }
+    .grid-lines {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 25% 25%;
+    }
+    .axis-mid-h { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.12); }
+    .axis-mid-v { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.12); }
+    .dot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800; color: #000;
+      cursor: default;
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
+    }
+    .dot-label {
+      position: absolute;
+      font-size: 9.5px; font-weight: 600;
+      white-space: nowrap;
+      color: #fff;
+    }
+
+    /* ── INSIGHT BOX ── */
+    .insight-box {
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(9,9,15,0));
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 14px;
+    }
+    .insight-box .i-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gold); margin-bottom: 5px; }
+    .insight-box p { font-size: 11.5px; color: #b0b0c8; line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 20px; padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-l { font-size: 10.5px; color: var(--muted); line-height: 1.5; }
+    .footer-r { font-size: 10.5px; color: var(--muted); text-align: right; }
+    .footer-r span { color: var(--gold); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="header-eyebrow">Luxury Brand Intelligence · Q1 2026</div>
+    <h1>The Luxury <span>Correction</span>:<br/>Who Held, Who Broke, and Why</h1>
+    <p class="header-sub">
+      A data-driven analysis of how the world's top luxury groups performed through the 2024 market reset —
+      comparing revenue resilience, brand equity, and margin stability across five major houses.
+    </p>
+  </div>
+  <div class="header-right">
+    <div class="author-pill">Kavita Adha</div><br/>
+    <div class="date-line">MS Business Analytics · University of Rochester<br/>linkedin.com/in/kavita-adha · March 2026</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STORY BANNER -->
+<div class="story-banner">
+  <div class="story-num">"</div>
+  <div class="story-text">
+    <h3>The Story This Data Tells</h3>
+    <p>Between 2021 and 2023, the global luxury market rode a post-COVID supercycle — driven by pent-up demand, stimulus spending, and Chinese consumer recovery.
+    By 2024, that cycle ended. Revenue declined across most major groups. But the correction wasn't uniform.
+    Hermès grew 15%. Kering fell 12%. The gap between them is not luck — it's the measurable distance between authentic brand equity and inflated positioning.
+    This dashboard asks: what does the data say about who actually built something durable?</p>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi gold">
+    <div class="kpi-label">Global Luxury Market 2024</div>
+    <div class="kpi-val">$362B</div>
+    <div class="kpi-sub2">Personal luxury goods market size (Bain & Co.)</div>
+    <span class="kpi-tag tag-down">↓ -2% vs 2023 peak</span>
+  </div>
+  <div class="kpi green">
+    <div class="kpi-label">Hermès Revenue Growth</div>
+    <div class="kpi-val">+15%</div>
+    <div class="kpi-sub2">FY2024 organic revenue growth — outpaced every major peer</div>
+    <span class="kpi-tag tag-up">Strongest in sector</span>
+  </div>
+  <div class="kpi rose">
+    <div class="kpi-label">Kering Revenue Decline</div>
+    <div class="kpi-val">-12%</div>
+    <div class="kpi-sub2">FY2024 revenue decline — Gucci down 20% organically</div>
+    <span class="kpi-tag tag-down">Widest gap vs peers</span>
+  </div>
+  <div class="kpi teal">
+    <div class="kpi-label">Hermès Operating Margin</div>
+    <div class="kpi-val">42%</div>
+    <div class="kpi-sub2">Maintained through the correction — highest in luxury</div>
+    <span class="kpi-tag tag-up">Industry benchmark</span>
+  </div>
+  <div class="kpi purple">
+    <div class="kpi-label">Chinese Luxury Spend Drop</div>
+    <div class="kpi-val">-20%</div>
+    <div class="kpi-sub2">Est. decline in Chinese consumer luxury spending in 2024</div>
+    <span class="kpi-tag tag-neu">Primary demand driver</span>
+  </div>
+</div>
+
+<!-- ROW 1: Revenue Trend + YoY Bar -->
+<div class="grid-2">
+
+  <!-- Revenue Trend Line Chart -->
+  <div class="card">
+    <div class="card-title">Revenue Trend by Luxury Group (2021–2024, indexed to 2021 = 100)</div>
+    <div class="card-sub">Normalised to 2021 baseline to show relative trajectory — not absolute size. Reveals which groups expanded vs. contracted through the cycle.</div>
+    <canvas id="revTrend" height="190"></canvas>
+  </div>
+
+  <!-- YoY Growth 2024 -->
+  <div class="card">
+    <div class="card-title">FY2024 Revenue Change vs. FY2023</div>
+    <div class="card-sub">Year-on-year organic revenue growth rate — the clearest single measure of whether brand demand held under pressure.</div>
+    <canvas id="yoyBar" height="190"></canvas>
+  </div>
+
+</div>
+
+<!-- ROW 2: Scorecard + Matrix -->
+<div class="grid-2">
+
+  <!-- Brand Scorecard Table -->
+  <div class="card">
+    <div class="card-title">Brand Resilience Scorecard — 2024</div>
+    <div class="card-sub">Multi-metric view across revenue, margin, price positioning, and brand equity signal.</div>
+    <table class="scorecard">
+      <thead>
+        <tr>
+          <th>Brand / Group</th>
+          <th>2024 Rev Growth</th>
+          <th>Op. Margin</th>
+          <th>Price Tier</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="brand-name">Hermès</div><div class="brand-house">Independent</div></td>
+          <td style="color:#40c98e;font-weight:700;">+15%</td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:90%;background:#40c98e;"></div></div>
+            <span style="font-size:11px;color:#8888a0;margin-left:6px;">42%</span>
+          </td>
+          <td style="color:#c9a84c;font-size:11.5px;">Ultra-Luxury</td>
+          <td><span class="status-pill s-resilient">Resilient</span></td>
+        </tr>
+        <tr>
+          <td><div class="brand-name">LVMH</div><div class="brand-house">Multi-brand group</div></td>
+          <td style="color:#e0c070;font-weight:700;">-2%</td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:67%;background:#9b72f5;"></div></div>
+            <span style="font-size:11px;color:#8888a0;margin-left:6px;">~26%</span>
+          </td>
+          <td style="color:#c9a84c;font-size:11.5px;">Premium–Luxury</td>
+          <td><span class="status-pill s-pressure">Under Pressure</span></td>
+        </tr>
+        <tr>
+          <td><div class="brand-name">Richemont</div><div class="brand-house">Cartier, IWC, Van Cleef</div></td>
+          <td style="color:#e0c070;font-weight:700;">-3%</td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:56%;background:#3ecfcf;"></div></div>
+            <span style="font-size:11px;color:#8888a0;margin-left:6px;">~24%</span>
+          </td>
+          <td style="color:#c9a84c;font-size:11.5px;">Ultra–Hard Luxury</td>
+          <td><span class="status-pill s-pressure">Under Pressure</span></td>
+        </tr>
+        <tr>
+          <td><div class="brand-name">Kering / Gucci</div><div class="brand-house">Kering Group</div></td>
+          <td style="color:#e05c5c;font-weight:700;">-12%</td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:28%;background:#e05c5c;"></div></div>
+            <span style="font-size:11px;color:#8888a0;margin-left:6px;">~18%</span>
+          </td>
+          <td style="color:#c9a84c;font-size:11.5px;">Accessible Luxury</td>
+          <td><span class="status-pill s-decline">In Decline</span></td>
+        </tr>
+        <tr>
+          <td><div class="brand-name">Burberry</div><div class="brand-house">Independent</div></td>
+          <td style="color:#3ecfcf;font-weight:700;">-18% → Reset</td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:18%;background:#e05c7e;"></div></div>
+            <span style="font-size:11px;color:#8888a0;margin-left:6px;">~8%</span>
+          </td>
+          <td style="color:#c9a84c;font-size:11.5px;">Accessible Luxury</td>
+          <td><span class="status-pill s-turnaround">Turnaround</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="insight-box">
+      <div class="i-label">Analyst Observation</div>
+      <p>Every brand that leaned on aspirational volume during the boom is now paying a margin price. Hermès' refusal to expand access or chase volume wasn't conservatism — it was the strategy that preserved pricing power when demand compressed.</p>
+    </div>
+  </div>
+
+  <!-- Brand Equity vs Revenue Matrix -->
+  <div class="card">
+    <div class="card-title">Brand Equity vs. Revenue Resilience Matrix</div>
+    <div class="card-sub">Plotting perceived brand equity strength against 2024 revenue performance. Top-right is where you want to be.</div>
+
+    <div class="matrix-wrap" style="height:280px;">
+      <div class="grid-lines"></div>
+      <div class="axis-mid-h"></div>
+      <div class="axis-mid-v"></div>
+
+      <!-- Quadrant labels -->
+      <div class="quadrant-label q-tl">High equity · Low revenue</div>
+      <div class="quadrant-label q-tr">High equity · High revenue</div>
+      <div class="quadrant-label q-bl">Low equity · Low revenue</div>
+      <div class="quadrant-label q-br">Low equity · High revenue</div>
+
+      <!-- Hermès — top right -->
+      <div class="dot" style="width:34px;height:34px;left:82%;top:14%;background:#40c98e;">
+        <span>H</span>
+        <div class="dot-label" style="top:-16px;left:50%;transform:translateX(-50%);">Hermès</div>
+      </div>
+
+      <!-- LVMH — mid right -->
+      <div class="dot" style="width:42px;height:42px;left:65%;top:42%;background:#9b72f5;">
+        <span>LV</span>
+        <div class="dot-label" style="top:-16px;left:50%;transform:translateX(-50%);">LVMH</div>
+      </div>
+
+      <!-- Richemont — upper mid -->
+      <div class="dot" style="width:28px;height:28px;left:55%;top:25%;background:#3ecfcf;">
+        <span>R</span>
+        <div class="dot-label" style="top:-16px;left:50%;transform:translateX(-50%);">Richemont</div>
+      </div>
+
+      <!-- Kering — bottom left -->
+      <div class="dot" style="width:36px;height:36px;left:28%;top:68%;background:#e05c5c;">
+        <span>K</span>
+        <div class="dot-label" style="bottom:-16px;left:50%;transform:translateX(-50%);">Kering</div>
+      </div>
+
+      <!-- Burberry — bottom far left -->
+      <div class="dot" style="width:26px;height:26px;left:16%;top:78%;background:#e05c7e;">
+        <span>B</span>
+        <div class="dot-label" style="bottom:-16px;left:50%;transform:translateX(-50%);">Burberry</div>
+      </div>
+
+      <!-- Prada — upper mid right -->
+      <div class="dot" style="width:28px;height:28px;left:70%;top:20%;background:#c9a84c;">
+        <span>P</span>
+        <div class="dot-label" style="top:-16px;right:0;">Prada</div>
+      </div>
+
+      <div class="axis-label axis-x">Revenue Resilience (2024) →</div>
+      <div class="axis-label axis-y">← Brand Equity Strength →</div>
+    </div>
+
+    <div class="insight-box">
+      <div class="i-label">What the matrix reveals</div>
+      <p>Hermès and Prada occupy the high-equity, high-resilience quadrant. Kering and Burberry fell into the danger zone — brand equity degraded before revenue declined. The data suggests brand equity leads revenue by 12–18 months.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ROW 3: Three insight cards -->
+<div class="grid-3">
+
+  <div class="card">
+    <div class="card-title">Why Hermès Held</div>
+    <div class="card-sub">Three data-backed structural advantages</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+      <div style="padding:12px;background:rgba(64,201,142,0.06);border:1px solid rgba(64,201,142,0.15);border-radius:8px;">
+        <div style="font-size:11px;font-weight:700;color:#40c98e;margin-bottom:4px;">Controlled Scarcity</div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.5;">Waitlist architecture means demand is always ahead of supply. Price corrections don't reach a brand when buyers are competing to spend.</div>
+      </div>
+      <div style="padding:12px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;">No Volume Dependence</div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.5;">Hermès' revenue is not driven by volume expansion. The same 42% margin holds in a downturn because cost structure was never built for mass.</div>
+      </div>
+      <div style="padding:12px;background:rgba(62,207,207,0.06);border:1px solid rgba(62,207,207,0.15);border-radius:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:4px;">Client Quality, Not Quantity</div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.5;">The top 5% of Hermès clients account for a disproportionate share of revenue — ultra-HNWI spending didn't compress in 2024. Aspirational spending did.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Why Kering / Gucci Broke</div>
+    <div class="card-sub">The accessible luxury trap — in three moves</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+      <div style="padding:12px;background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.15);border-radius:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">Aspirational Overexposure</div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.5;">Gucci expanded hard into aspirational buyer segments 2019–2022. When those consumers exited luxury in 2024, Gucci lost its revenue base — and had no ultra-luxury floor to fall back on.</div>
+      </div>
+      <div style="padding:12px;background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.15);border-radius:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">Logo Saturation</div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.5;">Ubiquity is the enemy of luxury. When everyone can spot a Gucci GG on the street, it stops signalling exclusivity. The brand's distinctiveness score fell ahead of its revenue.</div>
+      </div>
+      <div style="padding:12px;background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.15);border-radius:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">Creative Disruption Cost</div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.5;">Three creative director transitions in five years created signal noise. Consumers couldn't form a stable brand association — the product language kept changing before trust was built.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">The Lesson for Brand Strategy</div>
+    <div class="card-sub">What the correction is teaching the industry</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:22px;height:22px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--gold);">1</div>
+        <div style="font-size:12px;color:var(--sub);line-height:1.5;"><strong style="color:var(--text);">Brand equity leads revenue by ~12–18 months.</strong> By the time Kering's revenue fell, the brand signal had been weakening for two years.</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:22px;height:22px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--gold);">2</div>
+        <div style="font-size:12px;color:var(--sub);line-height:1.5;"><strong style="color:var(--text);">Volume growth and brand depth are often in tension.</strong> Chasing scale in a prestige category erodes the scarcity signal that justifies the premium.</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:22px;height:22px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--gold);">3</div>
+        <div style="font-size:12px;color:var(--sub);line-height:1.5;"><strong style="color:var(--text);">Client quality > client quantity.</strong> Hermès' resilience proves that depth of relationship with the right customer is more defensible than breadth with the aspirational buyer.</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:22px;height:22px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:var(--gold);">4</div>
+        <div style="font-size:12px;color:var(--sub);line-height:1.5;"><strong style="color:var(--text);">Data was available. The question was whether anyone was watching it.</strong> Volume metrics, retention cohorts, and brand equity scores all signalled the correction — months before earnings reflected it.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-l">
+    Data sources: Bain & Company Global Luxury Study, Company FY2024 Annual Reports (LVMH, Hermès, Kering, Richemont, Burberry),<br/>
+    Interbrand Best Global Brands 2024, McKinsey State of Fashion 2025 · Analysis and visualisation by Kavita Adha
+  </div>
+  <div class="footer-r">
+    <span>Kavita Adha</span> · MS Business Analytics, University of Rochester<br/>
+    linkedin.com/in/kavita-adha · March 2026
+  </div>
+</div>
+
+<script>
+// ── Revenue Trend (Indexed 2021 = 100) ──
+const rtCtx = document.getElementById('revTrend').getContext('2d');
+new Chart(rtCtx, {
+  type: 'line',
+  data: {
+    labels: ['2021','2022','2023','2024'],
+    datasets: [
+      {
+        label: 'Hermès',
+        data: [100, 129, 158, 182],
+        borderColor: '#40c98e', backgroundColor: 'rgba(64,201,142,0.08)',
+        fill: false, tension: 0.35, pointRadius: 5, borderWidth: 2.5
+      },
+      {
+        label: 'LVMH',
+        data: [100, 123, 140, 137],
+        borderColor: '#9b72f5', backgroundColor: 'transparent',
+        fill: false, tension: 0.35, pointRadius: 5, borderWidth: 2, borderDash: []
+      },
+      {
+        label: 'Richemont',
+        data: [100, 119, 136, 132],
+        borderColor: '#3ecfcf', backgroundColor: 'transparent',
+        fill: false, tension: 0.35, pointRadius: 5, borderWidth: 2
+      },
+      {
+        label: 'Kering',
+        data: [100, 115, 125, 110],
+        borderColor: '#e05c5c', backgroundColor: 'transparent',
+        fill: false, tension: 0.35, pointRadius: 5, borderWidth: 2
+      },
+      {
+        label: 'Burberry',
+        data: [100, 112, 122, 100],
+        borderColor: '#e05c7e', backgroundColor: 'transparent',
+        fill: false, tension: 0.35, pointRadius: 5, borderWidth: 2, borderDash: [4,3]
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { color: '#6b6b8a', font: { size: 10 }, boxWidth: 14, padding: 12 } },
+      tooltip: {
+        backgroundColor: '#111118', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
+        titleColor: '#8888a0', bodyColor: '#fff',
+        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' (index)' }
+      }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4a4a5e', font: { size: 11 } } },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        ticks: { color: '#4a4a5e', font: { size: 11 }, callback: v => v },
+        min: 80
+      }
+    }
+  }
+});
+
+// ── YoY Bar Chart ──
+const yoyCtx = document.getElementById('yoyBar').getContext('2d');
+new Chart(yoyCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Hermès', 'Prada Group', 'Richemont', 'LVMH', 'Kering', 'Burberry'],
+    datasets: [{
+      label: 'FY2024 Revenue Growth (%)',
+      data: [15, 18, -3, -2, -12, -18],
+      backgroundColor: [
+        'rgba(64,201,142,0.85)',
+        'rgba(201,168,76,0.85)',
+        'rgba(62,207,207,0.7)',
+        'rgba(155,114,245,0.7)',
+        'rgba(224,92,92,0.85)',
+        'rgba(224,92,126,0.85)'
+      ],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#111118', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
+        bodyColor: '#fff',
+        callbacks: { label: ctx => ' ' + (ctx.parsed.x > 0 ? '+' : '') + ctx.parsed.x + '%' }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        ticks: { color: '#4a4a5e', font: { size: 11 }, callback: v => v + '%' }
+      },
+      y: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11.5 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
